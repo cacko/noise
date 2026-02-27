@@ -15,7 +15,14 @@ from kivy.core.text import LabelBase
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.behaviors import ButtonBehavior
+from kivy.logger import Logger, LOG_LEVELS
+from noise import log_level
 
+
+
+Logger.setLevel(LOG_LEVELS[log_level.lower()])
+
+print(f"Log level set to: {log_level}")
 
 LabelBase.register(name="MaterialSymbols", fn_regular=str(FONT_SYMBOLS))
 LabelBase.register(name="Limelight", fn_regular=str(FONT_TITLE))
