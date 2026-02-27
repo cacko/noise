@@ -1,0 +1,39 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  PROJECT: noise
+  APP: noise
+
+tasks:
+  default:
+    dir: src
+    desc: run app
+    cmds:
+      - direnv exec . mamba run -n {{.PROJECT}} python -m {{.PROJECT}} {{.CLI_ARGS}}
+    silent: true
+
+  console:
+    dir: src
+    desc: run console app
+    cmds:
+      - direnv exec . mamba run -n {{.PROJECT}} python -m {{.PROJECT}} console
+
+  logs:
+    desc: monitor logs
+    cmds:
+      - ssh $REMOTE_HOST 'source ~/.zshrc;journalctl --user-unit {{.PROJECT}} -f --all'
+
+  export:
+    desc: export env
+    cmds:
+      - direnv exec . mamba env export --no-builds -n {{.PROJECT}} > environment.yml
+  
+  push:
+    desc: commit and pushes current changes
+    cmds:
+      - git add .  || true
+      - git commit -am "$(curl -s https://commit.cacko.net/index.txt)" || true
+      - git push || true
+  
